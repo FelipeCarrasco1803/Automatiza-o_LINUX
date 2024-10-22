@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Definindo os grupos
+echo "Criando grupos..."
+groupadd admin
+groupadd dev
+groupadd user
+
+# Definindo os usuários e adicionando-os aos grupos
+echo "Criando usuários..."
+useradd -m -G admin -s /bin/bash admin_user
+useradd -m -G dev -s /bin/bash dev_user
+useradd -m -G user -s /bin/bash regular_user
+
+# Definindo senhas para os usuários (no caso, as senhas são "senha123")
+echo "Definindo senhas..."
+echo "admin_user:senha123" | chpasswd
+echo "dev_user:senha123" | chpasswd
+echo "regular_user:senha123" | chpasswd
+
+# Criando diretórios para os usuários
+echo "Criando diretórios para os usuários..."
+mkdir -p /home/admin_user /home/dev_user /home/regular_user
+
+# Definindo permissões de diretórios
+echo "Configurando permissões dos diretórios..."
+chown admin_user:admin /home/admin_user
+chown dev_user:dev /home/dev_user
+chown regular_user:user /home/regular_user
+
+chmod 700 /home/admin_user
+chmod 770 /home/dev_user
+chmod 755 /home/regular_user
+
+# Finalizando o script
+echo "Infraestrutura de usuários, grupos e diretórios configurada com sucesso!"
